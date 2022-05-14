@@ -36,3 +36,9 @@ jobs:
 
       - name: Run Maven Package
         run: mvn -B clean package -Pproduction
+                
+      - name: JUnit Report Action
+        uses: mikepenz/action-junit-report@v3.0.3
+        with:
+         fail_on_failure: true
+         include_passed: true
