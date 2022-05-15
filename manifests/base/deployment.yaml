@@ -44,18 +44,22 @@ spec:
           httpGet:
             path: /actuator/health
             port: 8080
+          initialDelaySeconds: 120
+          periodSeconds: 15
         readinessProbe:
           httpGet:
             path: /actuator/health
             port: 8080
+          initialDelaySeconds: 120
+          periodSeconds: 15
         ports:
         - containerPort: 8080
           name: http
           protocol: TCP
         resources:
           limits:
-            cpu: 1000m
-            memory: 1024Mi
+            cpu: 2500m
+            memory: 2048Mi
           requests:
             cpu: 500m
             memory: 512Mi
