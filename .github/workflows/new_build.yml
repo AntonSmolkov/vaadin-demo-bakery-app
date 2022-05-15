@@ -23,10 +23,10 @@ jobs:
         fetch-depth: 0                # fetch the whole repo history
     
     - name: git log
-      run: git log --no-walk --tags --pretty="%h %d %s" --decorate=full &&  git status && git branch
+      run: git branch --all
       
     - name: git merge base
-      run: git merge-base master HEAD
+      run: git merge-base origin/master HEAD
       
 
     - name: Git Version
