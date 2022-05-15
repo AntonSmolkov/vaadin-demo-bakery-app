@@ -55,7 +55,6 @@ jobs:
       with:
          report_paths: '**target/surefire-reports/TEST-*.xml'
          fail_on_failure: true
-         include_passed: true
 
     - name: Package
       run: mvn jar:jar -Drevision=${VERSION}
@@ -63,7 +62,7 @@ jobs:
         VERSION: ${{ steps.version.outputs.calculated_version }}
 
     - name: Build image
-      run: docker build . --file Dockerfile --tag ${APP_NAME} --label "runnumber=${GITHUB_RUN_ID}"
+      run: docker build . --file Dockerfile --tag ${APP_NAME} --build-arg VERSION=${VERSION} --label "runnumber=${GITHUB_RUN_ID}"
       env:
         VERSION: ${{ steps.version.outputs.calculated_version }}
 
