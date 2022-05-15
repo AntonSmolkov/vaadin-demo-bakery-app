@@ -10,7 +10,7 @@ on:
     tags:        
       - v**
 env:
-  DOCKER_IMAGE_ID: ghcr.io/${{ github.repository_owner }}/vaadin-demo-bakery-app
+  APP_NAME: vaadin-demo-bakery-app
 
 jobs:
   build:
@@ -63,7 +63,7 @@ jobs:
         VERSION: ${{ steps.version.outputs.calculated_version }}
 
     - name: Build image
-      run: docker build . --file Dockerfile --tag ${DOCKER_IMAGE_ID}:${VERSION} --label "runnumber=${GITHUB_RUN_ID}"
+      run: docker build . --file Dockerfile --tag ${APP_NAME} --label "runnumber=${GITHUB_RUN_ID}"
       env:
         VERSION: ${{ steps.version.outputs.calculated_version }}
 
@@ -72,10 +72,18 @@ jobs:
 
     - name: Push image to docker registry
       run: |
-        docker push ${DOCKER_IMAGE_ID}:${VERSION}
+        IMAGE_ID=ghcr.io/${{ github.repository_owner }}/${APP_NAME}
+        
+        # Change all uppercase to lowercase
+        IMAGE_ID=$(echo ${IMAGE_ID} | tr '[A-Z]' '[a-z]')
+        VERSION=$(echo ${VERSION} | tr '[A-Z]' '[a-z]')
+        
+        docker tag ${APP_NAME} ${IMAGE_ID}:${VERSION}
+        docker push ${IMAGE_ID}:${VERSION}
+        
         if [[ "${IS_RELEASE}" == "true" ]]
         then
-          docker tag ${DOCKER_IMAGE_ID}:${VERSION} ${DOCKER_IMAGE_ID}:latest
+          docker tag ${APP_NAME} ${IMAGE_ID}:latest
           docker push $IMAGE_ID:latest
         fi
       env:
