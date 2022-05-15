@@ -18,5 +18,6 @@ jobs:
         id: check_existence
         run: |  
           IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/${APP_NAME} | tr '[A-Z]' '[a-z]')
-          VERSION=$(echo ${{ github.event.inputs.releaseVersion }} | tr '[A-Z]' '[a-z]')
+          VERSION=$(echo ${{ github.event.inputs.deployVersion }} | tr '[A-Z]' '[a-z]')
+          echo https://ghcr.io/v2/ghcr.io/${IMAGE_ID}/manifests/${VERSION}
           curl --head --fail -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://ghcr.io/v2/ghcr.io/${IMAGE_ID}/manifests/${VERSION}
