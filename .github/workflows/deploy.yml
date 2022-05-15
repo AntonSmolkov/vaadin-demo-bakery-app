@@ -49,15 +49,15 @@ jobs:
           MAIN_SECRET: '${{ secrets.MAIN_SECRET }}'
         
       - name: Generate environment manifests
-        run: kubectl kustomize ./manifests/${ENVIRONMENT}/ > ./manifests.${ENVIRONMENT}.yaml
+        run: kubectl kustomize ./manifests/${ENVIRONMENT}/ > ./manifests.result.yaml
         
       - name: Show generated environment manifests
-        run: cat ./manifests.${ENVIRONMENT}.yaml
+        run: cat manifests.result.yaml
         
       - name: Deploy to k8s
         uses: Azure/k8s-deploy@v3.1
         with:
           action: deploy
           manifests: |
-            manifests.${ENVIRONMENT}.yaml
+            manifests.result.yaml
           images: ${{ env.IMAGE_FULL_ID }}
