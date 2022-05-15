@@ -29,7 +29,10 @@ jobs:
           curl --head --fail -H "Authorization: Bearer ${REPOSITORY_TOKEN}" https://ghcr.io/v2/${IMAGE_ID}/manifests/${VERSION}
           echo "IMAGE_FULL_ID=${IMAGE_ID}:${VERSION}"
           echo "IMAGE_FULL_ID=${IMAGE_ID}:${VERSION}" >> $GITHUB_ENV
-          
+      
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
       - name: Install kubectl
         uses: azure/setup-kubectl@v2.0
     
