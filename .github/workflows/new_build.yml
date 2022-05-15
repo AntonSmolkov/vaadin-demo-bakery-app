@@ -32,7 +32,7 @@ jobs:
        cache: 'npm'
  
     - name: Compile
-      run: mvn clean compile test-compile --file pom.xml
+      run: mvn clean compile test-compile -Pproduction --file pom.xml
 
     - name: Test
       run: mvn surefire:test --file pom.xml
