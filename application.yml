@@ -1,6 +1,6 @@
 spring:
   application:
-    name: vaadin-demo-bakery-app
+    name: ${APP_NAME:vaadin-demo-bakery-app}
 management:
   security:
     enabled: false

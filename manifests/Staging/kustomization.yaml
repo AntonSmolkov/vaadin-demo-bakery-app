@@ -1,0 +1,19 @@
+resources:
+  - ../base
+
+namespace: staging
+
+patchesJSON6902:
+- target:
+    kind: Ingress
+    name: vaadin-demo-bakery-app
+  patch: |-
+    - op: replace
+      path: /spec/rules/0/host
+      value: bakery-staging.smolkov.spb.ru
+    - op: replace
+      path: /spec/tls/0/hosts/0
+      value: bakery-staging.smolkov.spb.ru
+    - op: replace
+      path: /spec/tls/0/secretName
+      value: bakery-staging-tls

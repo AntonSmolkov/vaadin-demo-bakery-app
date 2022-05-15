@@ -1,0 +1,22 @@
+name: Perform deploy
+on:
+  workflow_dispatch:
+    inputs:
+      deployVersion:
+        description: Docker tag to deploy
+        required: true
+env:
+  APP_NAME: vaadin-demo-bakery-app
+
+jobs:
+  deploy:
+    name: Deploy project
+    runs-on: ubuntu-20.04
+    permissions: "write-all|read-all"
+    steps:
+      - name: check tag existance  # Fills env.CALCULATED_VERSION and env.CALCULATED_VERSION_IS_RELEASE
+        id: check_existence
+        run: |  
+          IMAGE_ID=$(echo ghcr.io/${{ github.repository_owner }}/${APP_NAME} | tr '[A-Z]' '[a-z]')
+          VERSION=$(echo ${{ github.event.inputs.releaseVersion }} | tr '[A-Z]' '[a-z]')
+          curl --head --fail -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://ghcr.io/v2/ghcr.io/${IMAGE_ID}/manifests/${VERSION}
