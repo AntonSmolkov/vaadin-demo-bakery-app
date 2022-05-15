@@ -22,5 +22,5 @@ jobs:
           VERSION=$(echo ${{ github.event.inputs.deployVersion }} | tr '[A-Z]' '[a-z]')
           REPOSITORY_TOKEN=$(curl -u ${{ github.repository_owner }}:${{ secrets.GITHUB_TOKEN }} https://ghcr.io/token\?scope\="repository:${REPOSITORY_ID}:pull" | jq -r .token)
           
-          echo https://ghcr.io/v2/ghcr.io/${IMAGE_ID}/manifests/${VERSION}
-          curl --head --fail -H "Authorization: Bearer ${REPOSITORY_TOKEN}" https://ghcr.io/v2/ghcr.io/${IMAGE_ID}/manifests/${VERSION}
+          echo https://ghcr.io/v2/${IMAGE_ID}/manifests/${VERSION}
+          curl --head --fail -H "Authorization: Bearer ${REPOSITORY_TOKEN}" https://ghcr.io/v2/${IMAGE_ID}/manifests/${VERSION}
