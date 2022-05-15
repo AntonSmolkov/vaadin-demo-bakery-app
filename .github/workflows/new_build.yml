@@ -26,6 +26,9 @@ jobs:
       id: version
       run:  iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/AntonSmolkov/HandyPoshScripts/github-action/DevOps/SemVerCalc_GitHubFlow_Actions.ps1'))
       shell: pwsh
+      env:
+        REF_NAME: ${{ github.ref_name }}
+        REF_TYPE: ${{ github.ref_type }}
 
     - name: echo version
       run: echo "${{ steps.version.outputs.calculated_version }}"
