@@ -14,10 +14,8 @@ jobs:
   build:
     name: Build Project
     runs-on: ubuntu-20.04
-    permissions:
-      issues: write
-      pull-requests: write
-      contents: write
+    permissions: write-all
+
     steps:
     
     - uses: actions/checkout@v3
