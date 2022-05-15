@@ -23,7 +23,7 @@ jobs:
         fetch-depth: 0                # fetch the whole repo history
     
     - name: git log
-      run: git log --no-walk --tags --pretty="%h %d %s" --decorate=full &&  git status && git logs --tags
+      run: git log --no-walk --tags --pretty="%h %d %s" --decorate=full &&  git status && git log --tags
       
     - name: Git Version
       id: version
