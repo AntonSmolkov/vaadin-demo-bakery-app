@@ -38,7 +38,7 @@ spec:
         - secretRef:
             name: main-secret
             optional: false
-        image: ghcr.io/antonsmolkov/vaadin-demo-bakery-app:latest
+        image: vaadin-demo-bakery-app
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
