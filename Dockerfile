@@ -7,7 +7,7 @@ LABEL \
     org.label-schema.vcs-url="https://github.com/igor-baiborodine/vaadin-demo-bakery-app" \
     org.label-schema.usage="https://github.com/igor-baiborodine/vaadin-demo-bakery-app/blob/master/README.md"
 
-ARG VERSION
+ARG CALCULATED_VERSION
 ENV APP_HOME /opt/bakery
 ENV APP_USER bakery
 ENV APP_GROUP bakery
@@ -23,7 +23,7 @@ RUN set -ex; \
     rm -rf /var/lib/apt/lists/*; \
     gosu nobody true
 
-COPY --chown=${APP_USER}:${APP_GROUP} ./target/vaadin-demo-bakery-app-${VERSION}.war ${APP_HOME}/app.war
+COPY --chown=${APP_USER}:${APP_GROUP} ./target/vaadin-demo-bakery-app-${CALCULATED_VERSION}.war ${APP_HOME}/app.war
 COPY docker-entrypoint.sh /usr/local/bin/
 
 RUN chmod a+x /usr/local/bin/docker-entrypoint.sh

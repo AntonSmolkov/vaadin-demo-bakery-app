@@ -23,7 +23,7 @@ jobs:
       with:
         fetch-depth: 0                # fetch the whole repo history
 
-    - name: Git Version
+    - name: Git Version  # Fills env.CALCULATED_VERSION and env.CALCULATED_VERSION_IS_RELEASE
       id: version
       run:  iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/AntonSmolkov/HandyPoshScripts/github-action/DevOps/SemVerCalc_GitHubFlow_Actions.ps1'))
       shell: pwsh
@@ -45,14 +45,10 @@ jobs:
        cache: 'npm'
  
     - name: Compile
-      run: mvn clean compile test-compile -Drevision=${VERSION} -Pproduction
-      env:
-        VERSION: ${{ steps.version.outputs.calculated_version }}
+      run: mvn clean compile test-compile -Drevision=${{ env.CALCULATED_VERSION }} -Pproduction
 
     - name: Test
-      run: mvn surefire:test -Drevision=${VERSION} || exit 0
-      env:
-        VERSION: ${{ steps.version.outputs.calculated_version }}
+      run: mvn surefire:test -Drevision=${{ env.CALCULATED_VERSION }} || exit 0
 
     - name: Generate test report
       uses: mikepenz/action-junit-report@v3.0.3
@@ -61,15 +57,11 @@ jobs:
          fail_on_failure: true
 
     - name: Package
-      run: mvn war:war -Drevision=${VERSION}
-      env:
-        VERSION: ${{ steps.version.outputs.calculated_version }}
+      run: mvn war:war -Drevision=${{ env.CALCULATED_VERSION }}
 
     - name: Build image
-      run: docker build . --file Dockerfile --tag ${APP_NAME} --build-arg VERSION=${VERSION} --label "runnumber=${GITHUB_RUN_ID}"
-      env:
-        VERSION: ${{ steps.version.outputs.calculated_version }}
-
+      run: docker build . --file Dockerfile --tag ${APP_NAME} --build-arg CALCULATED_VERSION=${{ env.CALCULATED_VERSION }} --label "runnumber=${GITHUB_RUN_ID}"
+      
     - name: Log in to docker registry
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
 
@@ -79,16 +71,13 @@ jobs:
         
         # Change all uppercase to lowercase
         IMAGE_ID=$(echo ${IMAGE_ID} | tr '[A-Z]' '[a-z]')
-        VERSION=$(echo ${VERSION} | tr '[A-Z]' '[a-z]')
+        VERSION=$(echo ${{ env.CALCULATED_VERSION }}  | tr '[A-Z]' '[a-z]')
         
-        docker tag ${APP_NAME} ${IMAGE_ID}:${VERSION}
-        docker push ${IMAGE_ID}:${VERSION}
+        docker tag ${APP_NAME} ${IMAGE_ID}:${{ env.CALCULATED_VERSION }} 
+        docker push ${IMAGE_ID}:${{ env.CALCULATED_VERSION }} 
         
-        if [[ "${IS_RELEASE}" == "true" ]]
+        if [[ "${{ env.CALCULATED_VERSION_IS_RELEASE }}" == "true" ]]
         then
           docker tag ${APP_NAME} ${IMAGE_ID}:latest
           docker push $IMAGE_ID:latest
         fi
-      env:
-        VERSION: ${{ steps.version.outputs.calculated_version }}
-        IS_RELEASE: ${{ steps.version.outputs.calculated_version_is_release }}
