@@ -58,6 +58,7 @@ jobs:
         uses: Azure/k8s-deploy@v3.1
         with:
           action: deploy
+          namespace: ""
           manifests: |
             manifests.result.yaml
           images: ${{ env.IMAGE_FULL_ID }}
