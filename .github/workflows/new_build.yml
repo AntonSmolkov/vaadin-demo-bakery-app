@@ -24,7 +24,7 @@ jobs:
 
     - name: Git Version
       id: version
-      run:  iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/AntonSmolkov/HandyPoshScripts/github-actions/DevOps/SemVerCalc_GitHubFlow_Actions.ps1'))
+      run:  iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/AntonSmolkov/HandyPoshScripts/github-action/DevOps/SemVerCalc_GitHubFlow_Actions.ps1'))
       shell: pwsh
 
     - name: echo version
