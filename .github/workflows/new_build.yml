@@ -11,6 +11,7 @@ on:
       - v**
 env:
   DOCKER_IMAGE_ID: ghcr.io/${{ github.repository_owner }}/vaadin-demo-bakery-app
+  CALCULATED_VERSION: ${{ steps.version.outputs.calculated_version }}
 
 jobs:
   build:
@@ -63,16 +64,16 @@ jobs:
       run: mvn jar:jar -Drevision=${{ steps.version.outputs.calculated_version }}
 
     - name: Build image
-      run: docker build . --file Dockerfile --tag ${DOCKER_IMAGE_ID}:{{ steps.version.outputs.calculated_version }} --label "runnumber=${GITHUB_RUN_ID}"
+      run: docker build . --file Dockerfile --tag ${DOCKER_IMAGE_ID}:${{ steps.version.outputs.calculated_version }} --label "runnumber=${GITHUB_RUN_ID}"
 
     - name: Log in to ghcr.io registry
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
 
     - name: Push image to ghcr.io registry
       run: |
-        docker push ${DOCKER_IMAGE_ID}:{{ steps.version.outputs.calculated_version }}
+        docker push ${DOCKER_IMAGE_ID}:${{ steps.version.outputs.calculated_version }}
         if [[ "${{ steps.version.outputs.calculated_version_is_release }}" == "true" ]]
         then
-          docker tag ${DOCKER_IMAGE_ID}:{{ steps.version.outputs.calculated_version }} ${DOCKER_IMAGE_ID}:latest
+          docker tag ${DOCKER_IMAGE_ID}:${{ steps.version.outputs.calculated_version }} ${DOCKER_IMAGE_ID}:latest
           docker push $IMAGE_ID:latest
         fi
