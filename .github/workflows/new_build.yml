@@ -57,7 +57,7 @@ jobs:
          fail_on_failure: true
 
     - name: Package
-      run: mvn jar:jar -Drevision=${VERSION}
+      run: mvn war:war -Drevision=${VERSION}
       env:
         VERSION: ${{ steps.version.outputs.calculated_version }}
 
