@@ -11,6 +11,9 @@ env:
 jobs:
   deploy:
     name: Deploy project
+    environment: Develop
+    env:
+      ENVIRONMENT: Develop
     runs-on: ubuntu-20.04
     permissions: read-all
     steps:
@@ -24,3 +27,31 @@ jobs:
           
           echo https://ghcr.io/v2/${IMAGE_ID}/manifests/${VERSION}
           curl --head --fail -H "Authorization: Bearer ${REPOSITORY_TOKEN}" https://ghcr.io/v2/${IMAGE_ID}/manifests/${VERSION}
+          echo "IMAGE_FULL_ID=${IMAGE_ID}:${VERSION}"
+          echo "IMAGE_FULL_ID=${IMAGE_ID}:${VERSION}" >> $GITHUB_ENV
+          
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v2.0
+    
+      - name: Set kubeconfig
+        uses: azure/k8s-set-context@v2
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+
+      - name: Fill config k8s secret
+        run: echo ${{secrets.MAIN_SECRET}} >> ./manifests/${ENVIRONMENT}/main-secret.yaml
+        
+      - name: Generate environment manifests
+        run: kubectl kustomize ./manifests/${ENVIRONMENT}/ > ./manifests.${ENVIRONMENT}.yaml
+        
+      - name: Show generated environment manifests
+        run: cat ./manifests.${ENVIRONMENT}.yaml
+        
+      - name: Deploy to k8s
+        uses: Azure/k8s-deploy@v3.1
+        with:
+          action: deploy
+          manifests: |
+            manifests.${ENVIRONMENT}.yaml
+          images: ${{ env.IMAGE_FULL_ID }}
