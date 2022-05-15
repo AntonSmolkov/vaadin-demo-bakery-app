@@ -45,10 +45,10 @@ jobs:
        cache: 'npm'
  
     - name: Compile
-      run: mvn clean compile test-compile -Pproduction
+      run: mvn clean compile test-compile -Drevision=${VERSION} -Pproduction
 
     - name: Test
-      run: mvn surefire:test || exit 0
+      run: mvn surefire:test -Drevision=${VERSION} || exit 0
 
     - name: Generate test report
       uses: mikepenz/action-junit-report@v3.0.3
