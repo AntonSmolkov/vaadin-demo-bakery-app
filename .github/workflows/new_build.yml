@@ -57,7 +57,7 @@ jobs:
          fail_on_failure: true
 
     - name: Package
-      run: mvn war:war -Drevision=${{ env.CALCULATED_VERSION }}
+      run: mvn war:war spring-boot:repackage -Drevision=${{ env.CALCULATED_VERSION }}
 
     - name: Build image
       run: docker build . --file Dockerfile --tag ${APP_NAME} --build-arg CALCULATED_VERSION=${{ env.CALCULATED_VERSION }} --label "runnumber=${GITHUB_RUN_ID}"
