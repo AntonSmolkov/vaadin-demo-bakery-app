@@ -1,5 +1,8 @@
 name: Perform deploy
 on:
+  pull_request:
+    branches:
+      - 'master'
   workflow_dispatch:
     inputs:
       deployVersion:
