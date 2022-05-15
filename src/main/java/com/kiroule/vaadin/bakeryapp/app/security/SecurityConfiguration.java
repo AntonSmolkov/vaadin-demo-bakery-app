@@ -89,6 +89,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				// Restrict access to our application.
 				.and().authorizeRequests()
 
+				// Allow actuator endpoints
+				.antMatchers("/actuator/**").permitAll()
+
 				// Allow all flow internal requests.
 				.requestMatchers(SecurityUtils::isFrameworkInternalRequest).permitAll()
 
