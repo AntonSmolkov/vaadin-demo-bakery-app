@@ -41,7 +41,7 @@ jobs:
 
       - name: Fill config k8s secret
         run: |
-          cat <<EOF >> ./manifests/${ENVIRONMENT}/main-secret.yaml
+          cat <<EOF > ./manifests/base/main-secret.yaml
           ${{secrets.MAIN_SECRET}}
           EOF
         
