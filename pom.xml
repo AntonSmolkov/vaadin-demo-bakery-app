@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.kiroule.vaadin.bakeryapp</groupId>
     <artifactId>vaadin-demo-bakery-app</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>war</packaging>
     <name>Vaadin Demo Bakery App</name>
     <parent>
@@ -13,6 +13,7 @@
     </parent>
 
     <properties>
+        <revision>1.0.0-SNAPSHOT</revision>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
