@@ -41,7 +41,9 @@ jobs:
 
       - name: Fill config k8s secret
         run: |
-          echo "${{ secrets.MAIN_SECRET }}" > ./manifests/base/main-secret.yaml
+          echo "${MAIN_SECRET}" > ./manifests/base/main-secret.yaml
+        env:
+          MAIN_SECRET: '${{ secrets.MAIN_SECRET }}'
         
       - name: Generate environment manifests
         run: kubectl kustomize ./manifests/${ENVIRONMENT}/ > ./manifests.${ENVIRONMENT}.yaml
