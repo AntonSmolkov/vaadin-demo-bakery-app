@@ -11,9 +11,9 @@ env:
 jobs:
   deploy:
     name: Deploy project
-    environment: Develop
+    environment: develop
     env:
-      ENVIRONMENT: Develop
+      ENVIRONMENT: develop
     runs-on: ubuntu-20.04
     permissions: read-all
     steps:
@@ -67,5 +67,5 @@ jobs:
         
       - name: Deploy to k8s
         run: |
-          kubectl apply -f ./manifests.result.yaml --insecure-skip-tls-verify
-          kubectl rollout status deployment/${APP_NAME}
+          kubectl apply -f ./manifests.result.yaml --namespace ${ENVIRONMENT} --insecure-skip-tls-verify 
+          kubectl rollout status deployment/${APP_NAME} --namespace ${ENVIRONMENT}
