@@ -46,9 +46,13 @@ jobs:
  
     - name: Compile
       run: mvn clean compile test-compile -Drevision=${VERSION} -Pproduction
+      env:
+        VERSION: ${{ steps.version.outputs.calculated_version }}
 
     - name: Test
       run: mvn surefire:test -Drevision=${VERSION} || exit 0
+      env:
+        VERSION: ${{ steps.version.outputs.calculated_version }}
 
     - name: Generate test report
       uses: mikepenz/action-junit-report@v3.0.3
