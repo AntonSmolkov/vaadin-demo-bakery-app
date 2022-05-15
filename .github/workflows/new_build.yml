@@ -23,6 +23,9 @@ jobs:
         ref: ${{ github.head_ref }}   # checkout the correct branch name
         fetch-depth: 0                # fetch the whole repo history
     
+    - name: git log
+      run: git log
+      
     - name: Git Version
       id: version
       run:  iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/AntonSmolkov/HandyPoshScripts/0.0.2/DevOps/SemVerCalc_GitHubFlow_Actions.ps1'))
