@@ -1,0 +1,10 @@
+resources:
+  - main-secret.yaml
+  - namespace.yaml
+  - deployment.yaml
+  - service.yaml
+  - ingress.yaml
+  - pdp.yaml
+  - service-monitor.yaml
+  
+namespace: dummy

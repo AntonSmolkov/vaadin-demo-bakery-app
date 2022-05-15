@@ -82,6 +82,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		// Not using Spring CSRF here to be able to use plain HTML for the login page
 		http.csrf().disable()
 
+
 				// Register our CustomRequestCache, that saves unauthorized access attempts, so
 				// the user is redirected after login.
 				.requestCache().requestCache(new CustomRequestCache())
@@ -105,6 +106,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				// Register the success handler that redirects users to the page they last tried
 				// to access
 				.successHandler(new SavedRequestAwareAuthenticationSuccessHandler())
+
 
 				// Configure logout
 				.and().logout().logoutSuccessUrl(LOGOUT_SUCCESS_URL);
