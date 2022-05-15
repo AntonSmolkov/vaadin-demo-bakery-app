@@ -12,7 +12,7 @@ jobs:
   deploy:
     name: Deploy project
     runs-on: ubuntu-20.04
-    permissions: read-all
+    permissions: read-all|write-all
     steps:
       - name: check tag existance
         id: check_existence
