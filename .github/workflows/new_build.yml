@@ -23,8 +23,12 @@ jobs:
         fetch-depth: 0                # fetch the whole repo history
     
     - name: git log
-      run: git log --no-walk --tags --pretty="%h %d %s" --decorate=full &&  git status && git log --tags
+      run: git log --no-walk --tags --pretty="%h %d %s" --decorate=full &&  git status && git branch
       
+    - name: git merge base
+      run: git merge-base master HEAD
+      
+
     - name: Git Version
       id: version
       run:  iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/AntonSmolkov/HandyPoshScripts/0.0.2/DevOps/SemVerCalc_GitHubFlow_Actions.ps1'))
