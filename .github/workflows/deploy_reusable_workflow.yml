@@ -13,6 +13,9 @@ env:
 
 jobs:
   deploy:
+    environment: 
+      name: ${{ inputs.environment }} 
+      url: https://backery-${{ inputs.environment }}.smolkov.spb.ru
     name: Deploy project to develop env
     env:
       ENVIRONMENT: ${{ inputs.environment }} 

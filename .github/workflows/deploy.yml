@@ -9,9 +9,6 @@ on:
 
 jobs:
   deploy-develop:
-    environment: 
-      name: develop
-      url: https://backery-develop.smolkov.spb.ru
     permissions: read-all
     uses: ./.github/workflows/deploy_reusable_workflow.yml
     with:
