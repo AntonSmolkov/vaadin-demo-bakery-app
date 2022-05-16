@@ -1,5 +1,5 @@
 ### This project is no longer maintained!
-hello rbi demo
+hello rbi demo 2
 Vaadin Demo Bakery App
 =======================
 ![Master Branch](https://github.com/igor-baiborodine/vaadin-demo-bakery-app/actions/workflows/build.yml/badge.svg?branch=master)
