@@ -13,11 +13,3 @@ jobs:
     with:
       username: mona
       secrets: inherit
-    name: Deploy project to develop env
-    environment: 
-      name: develop
-      url: https://bakery-develop.smolkov.spb.ru 
-    env:
-      ENVIRONMENT: develop
-    runs-on: ubuntu-20.04
-    permissions: read-all
