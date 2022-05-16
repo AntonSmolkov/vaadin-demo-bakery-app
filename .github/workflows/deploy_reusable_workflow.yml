@@ -18,7 +18,7 @@ jobs:
     environment: 
       name: ${{ inputs.environment }} 
       url: ${{ inputs.environment_url }}
-    name: Deploy project to develop env
+    name: deploy
     env:
       ENVIRONMENT: ${{ inputs.environment }} 
     runs-on: ubuntu-20.04
