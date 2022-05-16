@@ -9,7 +9,7 @@ on:
 jobs:
   deploy-develop:
     permissions: read-all
-    uses: ./.github/reusable/deploy_reusable_workflow.yml
+    uses: ./.github/workflows/deploy_reusable_workflow.yml
     with:
       deployVersion: ${{ github.event.inputs.deployVersion }}
       environment: develop
