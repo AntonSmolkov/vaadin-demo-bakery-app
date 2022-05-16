@@ -6,6 +6,7 @@ on:
         description: Docker image to deploy
         required: true
 
+jobs:
   deploy-staging:
     permissions: read-all
     uses: ./.github/reusable/deploy_reusable_workflow.yml
