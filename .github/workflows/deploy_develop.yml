@@ -13,4 +13,5 @@ jobs:
     with:
       deployVersion: ${{ github.event.inputs.deployVersion }}
       environment: develop
+      environment_url: https://bakery-develop.smolkov.spb.ru
     secrets: inherit

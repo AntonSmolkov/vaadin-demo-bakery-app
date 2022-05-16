@@ -13,6 +13,7 @@ jobs:
     with:
       deployVersion: ${{ github.event.inputs.deployVersion }}
       environment: staging
+      environment_url: https://bakery-staging.smolkov.spb.ru
     secrets: inherit
 
   deploy-production:
@@ -22,4 +23,5 @@ jobs:
     with:
       deployVersion: ${{ github.event.inputs.deployVersion }}
       environment: production
+      environment_url: https://bakery.smolkov.spb.ru
     secrets: inherit

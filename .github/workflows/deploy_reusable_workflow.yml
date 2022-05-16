@@ -4,6 +4,9 @@ on:
       deployVersion:
         required: true
         type: string
+      environment_url:
+        required: true
+        type: string
       environment:
         required: true
         type: string
@@ -14,7 +17,7 @@ jobs:
   deploy:
     environment: 
       name: ${{ inputs.environment }} 
-      url: https://backery-${{ inputs.environment }}.smolkov.spb.ru
+      url: ${{ inputs.environment_url }}
     name: Deploy project to develop env
     env:
       ENVIRONMENT: ${{ inputs.environment }} 
