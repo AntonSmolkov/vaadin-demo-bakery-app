@@ -1,5 +1,7 @@
 resources:
   - ../base
+  - service-monitor.yaml
+  - monitoring.yaml
 
 namespace: production
 
