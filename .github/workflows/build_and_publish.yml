@@ -1,14 +1,14 @@
-name: Build and publish
+name: Build and publish application
 
 on:
   pull_request:
     branches:
       - 'master'
   push:
-    branches:
-      - 'master'
     tags:        
       - v**
+  workflow_dispatch:
+
 env:
   APP_NAME: vaadin-demo-bakery-app
 
@@ -19,9 +19,11 @@ jobs:
     permissions: write-all
 
     steps:
-    - uses: actions/checkout@v3
+      
+    - name: Checkout Repo
+      uses: actions/checkout@v3
       with:
-        fetch-depth: 0                # fetch the whole repo history
+        fetch-depth: 0  # Fetch the whole repo history
 
     - name: Git Version  # Fills env.CALCULATED_VERSION and env.CALCULATED_VERSION_IS_RELEASE
       id: version
@@ -31,15 +33,15 @@ jobs:
         REF_NAME: ${{ github.ref_name }}
         REF_TYPE: ${{ github.ref_type }}
 
-    - uses: actions/setup-java@v3
-      name: Install JDK
+    - name: Install JDK
+      uses: actions/setup-java@v3
       with:
         distribution: 'temurin'
         java-version: '11'
         cache: 'maven'
 
-    - uses: actions/setup-node@v3
-      name: Install NodeJS
+    - name: Install NodeJS
+      uses: actions/setup-node@v3
       with:
        node-version: 14
        cache: 'npm'
