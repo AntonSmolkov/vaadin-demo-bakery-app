@@ -9,7 +9,7 @@ on:
 
 jobs:
   deploy-develop:
-    uses: ./.github/workflows/deploy_reusable_workflow
+    uses: ./.github/workflows/deploy_reusable_workflow.yml
     with:
       username: mona
       secrets: inherit
