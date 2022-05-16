@@ -1,4 +1,4 @@
-name: Deploy application (staging/production)
+name: Deploy (staging/production)
 on:
   workflow_dispatch:
     inputs:
