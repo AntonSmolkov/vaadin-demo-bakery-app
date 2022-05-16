@@ -1,4 +1,4 @@
-name: Deploy application to develop
+name: Deploy application (develop)
 on:
   workflow_dispatch:
     inputs:
