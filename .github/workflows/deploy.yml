@@ -15,3 +15,20 @@ jobs:
       deployVersion: ${{ github.event.inputs.deployVersion }}
       environment: develop
     secrets: inherit
+
+  deploy-staging:
+    permissions: read-all
+    uses: ./.github/workflows/deploy_reusable_workflow.yml
+    with:
+      deployVersion: ${{ github.event.inputs.deployVersion }}
+      environment: staging
+    secrets: inherit
+
+  deploy-production:
+    needs: deploy-staging
+    permissions: read-all
+    uses: ./.github/workflows/deploy_reusable_workflow.yml
+    with:
+      deployVersion: ${{ github.event.inputs.deployVersion }}
+      environment: production
+    secrets: inherit
