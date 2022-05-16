@@ -10,9 +10,6 @@ on:
 jobs:
   deploy-develop:
     name: Deploy project to develop env
-    pass-secrets-to-workflow:
-      uses: ./.github/workflows/deploy_reusable_workflow.yml
-      secrets: inherit
     environment: 
       name: develop
       url: https://bakery-develop.smolkov.spb.ru 
@@ -21,10 +18,10 @@ jobs:
     runs-on: ubuntu-20.04
     permissions: read-all
 
-     
     steps:
 
       - uses: ./.github/workflows/deploy_reusable_workflow
         with:
           deployVersion: ${{ github.event.inputs.deployVersion }}
           environment: develop
+        secrets: inherit
