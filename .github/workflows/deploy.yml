@@ -9,6 +9,10 @@ on:
 
 jobs:
   deploy-develop:
+    uses: ./.github/workflows/deploy_reusable_workflow
+    with:
+      username: mona
+      secrets: inherit
     name: Deploy project to develop env
     environment: 
       name: develop
@@ -17,11 +21,3 @@ jobs:
       ENVIRONMENT: develop
     runs-on: ubuntu-20.04
     permissions: read-all
-
-    steps:
-
-      - uses: ./.github/workflows/deploy_reusable_workflow
-        with:
-          deployVersion: ${{ github.event.inputs.deployVersion }}
-          environment: develop
-        secrets: inherit
