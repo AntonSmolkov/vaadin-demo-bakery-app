@@ -1,0 +1,85 @@
+name: Build and publish
+
+on:
+  pull_request:
+    branches:
+      - 'master'
+  push:
+    tags:        
+      - v**
+  workflow_dispatch:
+
+env:
+  APP_NAME: vaadin-demo-bakery-app
+
+jobs:
+  build:
+    name: Build Project
+    runs-on: ubuntu-20.04
+    permissions: write-all
+
+    steps:
+      
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Fetch the whole repo history
+
+    - name: Git Version  # Fills env.CALCULATED_VERSION and env.CALCULATED_VERSION_IS_RELEASE
+      id: version
+      run:  iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/AntonSmolkov/HandyPoshScripts/github-action/DevOps/SemVerCalc_GitHubFlow_Actions.ps1'))
+      shell: pwsh
+      env:
+        REF_NAME: ${{ github.ref_name }}
+        REF_TYPE: ${{ github.ref_type }}
+
+    - name: Install JDK
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '11'
+        cache: 'maven'
+
+    - name: Install NodeJS
+      uses: actions/setup-node@v3
+      with:
+       node-version: 14
+       cache: 'npm'
+ 
+    - name: Compile
+      run: mvn clean compile test-compile -Drevision=${{ env.CALCULATED_VERSION }} -Pproduction
+
+    - name: Test
+      run: mvn surefire:test -Drevision=${{ env.CALCULATED_VERSION }} || exit 0
+
+    - name: Generate test report
+      uses: mikepenz/action-junit-report@v3.0.3
+      with:
+         report_paths: '**target/surefire-reports/TEST-*.xml'
+         fail_on_failure: true
+
+    - name: Package
+      run: mvn war:war spring-boot:repackage -Drevision=${{ env.CALCULATED_VERSION }}
+
+    - name: Build image
+      run: docker build . --file Dockerfile --tag ${APP_NAME} --build-arg CALCULATED_VERSION=${{ env.CALCULATED_VERSION }} --label "runnumber=${GITHUB_RUN_ID}"
+      
+    - name: Log in to docker registry
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+
+    - name: Push image to docker registry
+      run: |
+        IMAGE_ID=ghcr.io/${{ github.repository_owner }}/${APP_NAME}
+        
+        # Change all uppercase to lowercase
+        IMAGE_ID=$(echo ${IMAGE_ID} | tr '[A-Z]' '[a-z]')
+        VERSION=$(echo ${{ env.CALCULATED_VERSION }}  | tr '[A-Z]' '[a-z]')
+        
+        docker tag ${APP_NAME} ${IMAGE_ID}:${{ env.CALCULATED_VERSION }} 
+        docker push ${IMAGE_ID}:${{ env.CALCULATED_VERSION }} 
+        
+        if [[ "${{ env.CALCULATED_VERSION_IS_RELEASE }}" == "true" ]]
+        then
+          docker tag ${APP_NAME} ${IMAGE_ID}:latest
+          docker push $IMAGE_ID:latest
+        fi
