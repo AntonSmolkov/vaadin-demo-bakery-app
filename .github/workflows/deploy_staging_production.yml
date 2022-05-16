@@ -1,24 +1,14 @@
-name: Deploy application
+name: Deploy application (staging/production)
 on:
   workflow_dispatch:
     inputs:
       deployVersion:
-        description: Docker tag to deploy
+        description: Docker image to deploy
         required: true
-
-
-jobs:
-  deploy-develop:
-    permissions: read-all
-    uses: ./.github/workflows/deploy_reusable_workflow.yml
-    with:
-      deployVersion: ${{ github.event.inputs.deployVersion }}
-      environment: develop
-    secrets: inherit
 
   deploy-staging:
     permissions: read-all
-    uses: ./.github/workflows/deploy_reusable_workflow.yml
+    uses: ./.github/workflows/reusable/deploy_reusable_workflow.yml
     with:
       deployVersion: ${{ github.event.inputs.deployVersion }}
       environment: staging
@@ -27,7 +17,7 @@ jobs:
   deploy-production:
     needs: deploy-staging
     permissions: read-all
-    uses: ./.github/workflows/deploy_reusable_workflow.yml
+    uses: ./.github/workflows/reusable/deploy_reusable_workflow.yml
     with:
       deployVersion: ${{ github.event.inputs.deployVersion }}
       environment: production

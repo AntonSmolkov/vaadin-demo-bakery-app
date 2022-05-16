@@ -1,0 +1,16 @@
+name: Deploy application to develop
+on:
+  workflow_dispatch:
+    inputs:
+      deployVersion:
+        description: Docker image tag to deploy
+        required: true
+
+jobs:
+  deploy-develop:
+    permissions: read-all
+    uses: ./.github/workflows/reusable/deploy_reusable_workflow.yml
+    with:
+      deployVersion: ${{ github.event.inputs.deployVersion }}
+      environment: develop
+    secrets: inherit
